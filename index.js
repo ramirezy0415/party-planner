@@ -32,12 +32,45 @@ async function get_single_party(id) {
   }
 }
 
+// === COMPONENTS ===
 // When a party name is clicked on, the application updates state by fetching information about a single party from the API.
+function list_party_details(selected_party) {
+  const $li = document.createElement("li");
+  $li.innerHTML = `
+    <a href="#selected_party">${selected_party.name}</a>
+  `;
+  $li.addEventListener("click", () => get_single_party(selected_party.id));
+  return $li;
+}
+
 // The application renders a message telling users to select a party if none is selected.
-// Functions are used to organize logic involving state changes.
-// The application is rerendered whenever state changes.
-// UI elements are organized into component functions.
-//
+function list_parties() {
+  const $ul = document.createElement("ul");
+  $ul.classList.add("lineup");
+  const party_list_component = parties.map(list_party_details);
+  $ul.replaceChildren(...party_list_component);
+  return $ul;
+}
+
+function display_list_party_details() {
+  if (!party) {
+    const $p = document.createElement("p");
+    $p.textContent = "Please select a party";
+    return $p;
+  }
+
+  const $section = document.createElement("section");
+  $section.innerHTML = `
+  <h2>${party.name} #${party.id}</h2>
+  <p>${party.date}</p>
+  </br>
+  <p>${party.location}</p>
+  </br>
+  <p>${party.description}</p>
+  `;
+
+  return $section;
+}
 
 function render() {
   const $app = document.querySelector("#app");
@@ -47,11 +80,14 @@ function render() {
         <h2>Upcoming Parties</h2>
         <PARTYLIST></PARTYLIST>
     </section>
-    <section>
+    <section id="selected_party">
         <h2>Party Details</h2>
         <PARTYDETAILS></PARTYDETAILS>
     </section>
     `;
+
+  $app.querySelector("PARTYLIST").replaceWith(list_parties());
+  $app.querySelector("PARTYDETAILS").replaceWith(display_list_party_details());
 }
 
 async function init() {
