@@ -60,7 +60,7 @@ function display_list_party_details() {
   }
 
   const $section = document.createElement("section");
-  $section.classList.add("event");
+  $section.classList.add("selected_event");
   $section.innerHTML = `
   <h3>${party.name.toUpperCase()} #${party.id}</h3>
   <p>${party.date}</p>
