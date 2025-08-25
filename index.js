@@ -46,7 +46,7 @@ function list_party_details(selected_party) {
 // The application renders a message telling users to select a party if none is selected.
 function list_parties() {
   const $ul = document.createElement("ul");
-  $ul.classList.add("lineup");
+  $ul.classList.add("events");
   const party_list_component = parties.map(list_party_details);
   $ul.replaceChildren(...party_list_component);
   return $ul;
@@ -60,12 +60,11 @@ function display_list_party_details() {
   }
 
   const $section = document.createElement("section");
+  $section.classList.add("event");
   $section.innerHTML = `
-  <h2>${party.name} #${party.id}</h2>
+  <h3>${party.name.toUpperCase()} #${party.id}</h3>
   <p>${party.date}</p>
-  </br>
   <p>${party.location}</p>
-  </br>
   <p>${party.description}</p>
   `;
 
@@ -76,6 +75,7 @@ function render() {
   const $app = document.querySelector("#app");
   $app.innerHTML = `
     <h1>Party Planner</h1>
+    <div id="content">
     <section>
         <h2>Upcoming Parties</h2>
         <PARTYLIST></PARTYLIST>
@@ -84,6 +84,7 @@ function render() {
         <h2>Party Details</h2>
         <PARTYDETAILS></PARTYDETAILS>
     </section>
+    </div>
     `;
 
   $app.querySelector("PARTYLIST").replaceWith(list_parties());

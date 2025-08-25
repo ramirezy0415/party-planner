@@ -4,12 +4,18 @@
   box-sizing: border-box;
 }
 
-h1 {
-  text-align: center;
-  padding: 1rem;
+body {
+  background-color: rgb(223, 195, 245);
 }
 
-main {
+h1,
+h2 {
+  text-align: center;
+  padding: 1rem;
+  margin-bottom: 10px;
+}
+
+#content {
   display: grid;
   gap: 1rem;
 }
@@ -18,39 +24,35 @@ section {
   padding: 0 1rem;
 }
 
-.lineup {
+.events {
   list-style: none;
   display: grid;
   gap: 1ch;
 }
 
-.lineup a {
+.events a {
   color: unset;
   text-decoration: unset;
 
   display: block;
   width: 100%;
-  border: 1px solid #eee;
+  border: 1px solid #eeeeee;
   border-radius: 0.25rem;
   padding: 1ch;
 }
 
-.lineup a:hover {
-  background: #eee;
+.events a:hover {
+  background: #a86dc0;
+  color: white;
 }
 
-.artist {
+.event {
   display: grid;
   gap: 1ch;
 }
 
-img {
-  max-width: 100%;
-  object-fit: contain;
-}
-
 @media (width > 600px) {
-  main {
+  div {
     grid-template-columns: 1fr 1fr;
   }
 }
