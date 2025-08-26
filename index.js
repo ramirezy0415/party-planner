@@ -132,9 +132,7 @@ async function init() {
   await get_guest_names();
   await get_rsvp_names();
   await get_party_names();
-  // console.log(rsvps);
-  // console.log(guests);
-  // console.log(guests);
+
   render();
 }
 
