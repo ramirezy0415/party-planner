@@ -89,8 +89,11 @@ function display_list_party_details() {
 
   // get rsvps for this event
   const event_rsvps = rsvps.filter((rsvp) => rsvp.eventId === party.id);
-  // .forEach((rsvp) => rsvp.guestId);
-  const guests = guests.filter((guest) => event_rsvps.includes(guest.id));
+  const guest_rsvps = event_rsvps.map((rsvp) => rsvp.guestId);
+
+  // Get guest names for those attending the event
+  const event_guests = guests.filter((guest) => guest_rsvps.includes(guest.id));
+  const guest_names = event_guests.map((guest) => guest.name);
 
   const $section = document.createElement("section");
   $section.classList.add("selected_event");
@@ -99,7 +102,7 @@ function display_list_party_details() {
   <p>${party.date}</p>
   <p>${party.location}</p>
   <p>${party.description}</p>
-  <p>${guests}</p>
+  <p class="guest_names"> Guest List: ${guest_names}</p>
   `;
 
   return $section;
@@ -126,9 +129,12 @@ function render() {
 }
 
 async function init() {
-  await get_party_names();
-  await get_rsvp_names();
   await get_guest_names();
+  await get_rsvp_names();
+  await get_party_names();
+  // console.log(rsvps);
+  // console.log(guests);
+  // console.log(guests);
   render();
 }
 
