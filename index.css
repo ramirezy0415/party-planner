@@ -56,6 +56,10 @@ section {
   padding: 1rem;
 }
 
+.guest_names {
+  font-style: normal;
+}
+
 @media (width > 600px) {
   div {
     grid-template-columns: 1fr 1fr;

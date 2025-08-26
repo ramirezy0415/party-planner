@@ -2,18 +2,46 @@
 // === STATE ===
 const BASE = "https://fsa-crud-2aa9294fe819.herokuapp.com/api";
 const COHORT = "/COHORT_CODE";
-const EVENTS = "/events";
-const ENDPOINT = BASE + COHORT + EVENTS;
+const BASE_ENDPOINT = BASE + COHORT;
+const BASE_EVENTS_ENDPOINT = `${BASE_ENDPOINT}/events`;
+const BASE_GUESTS_ENDPOINT = `${BASE_ENDPOINT}/guests`;
+const BASE_RSVPS_ENDPOINT = `${BASE_ENDPOINT}/rsvps`;
 
 let parties = [];
 let party;
+let guests = [];
+let rsvps = [];
 
 // The application renders a list of party names.
 async function get_party_names() {
   try {
-    const response = await fetch(ENDPOINT);
+    const response = await fetch(BASE_EVENTS_ENDPOINT);
     const result = await response.json();
     parties = result.data;
+    render();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// The application renders a list of guest names.
+async function get_guest_names() {
+  try {
+    const response = await fetch(BASE_GUESTS_ENDPOINT);
+    const result = await response.json();
+    guests = result.data;
+    render();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// The application renders a list of guest names.
+async function get_rsvp_names() {
+  try {
+    const response = await fetch(BASE_RSVPS_ENDPOINT);
+    const result = await response.json();
+    rsvps = result.data;
     render();
   } catch (error) {
     console.log(error);
@@ -23,7 +51,7 @@ async function get_party_names() {
 // The application renders the name, ID, date, description, and location of the selected party.
 async function get_single_party(id) {
   try {
-    const response = await fetch(`${ENDPOINT}/${id}`);
+    const response = await fetch(`${BASE_EVENTS_ENDPOINT}/${id}`);
     const result = await response.json();
     party = result.data;
     render();
@@ -59,6 +87,14 @@ function display_list_party_details() {
     return $p;
   }
 
+  // get rsvps for this event
+  const event_rsvps = rsvps.filter((rsvp) => rsvp.eventId === party.id);
+  const guest_rsvps = event_rsvps.map((rsvp) => rsvp.guestId);
+
+  // Get guest names for those attending the event
+  const event_guests = guests.filter((guest) => guest_rsvps.includes(guest.id));
+  const guest_names = event_guests.map((guest) => guest.name);
+
   const $section = document.createElement("section");
   $section.classList.add("selected_event");
   $section.innerHTML = `
@@ -66,6 +102,7 @@ function display_list_party_details() {
   <p>${party.date}</p>
   <p>${party.location}</p>
   <p>${party.description}</p>
+  <p class="guest_names"> Guest List: ${guest_names}</p>
   `;
 
   return $section;
@@ -92,7 +129,10 @@ function render() {
 }
 
 async function init() {
+  await get_guest_names();
+  await get_rsvp_names();
   await get_party_names();
+
   render();
 }
 
